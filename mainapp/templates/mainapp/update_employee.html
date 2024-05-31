@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Employee</title>
+</head>
+<body>
+    <h1>Update Employee</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="full_name">Full Name:</label>
+        <input type="text" name="full_name" value="{{ employee.FullName }}" required>
+
+        <label for="age">Age:</label>
+        <input type="number" name="age" value="{{ employee.Age }}" required>
+
+        <label for="dob">DOB:</label>
+        <input type="date" name="dob" value="{{ employee.DOB|date:'Y-m-d' }}" required>
+
+        <label for="salary">Salary:</label>
+        <input type="number" name="salary" value="{{ employee.Salary }}" required>
+
+        <label for="department">Department:</label>
+        <input type="text" name="department" value="{{ employee.Department }}" required>
+
+        <input type="submit" value="Update">
+    </form>
+</body>
+</html>

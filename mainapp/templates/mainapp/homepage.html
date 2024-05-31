@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presidio | Employee Management</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            margin: 0;
+        }
+
+        form {
+            display: flex;
+            margin: 5px 0;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 6px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin: 5px;
+        }
+
+        input {
+            width: fit-content;
+            padding: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+            margin-left:4px;
+            width: fit-content;
+        }
+
+        h2 {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+            padding: 5px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            margin-right: 5px;
+            display: inline-block;
+        }
+
+        a:hover {
+            background-color: #4CAF50;
+            color: white;
+        } 
+
+        .result-box{
+            margin-left: 15px;
+        }
+
+        .avg_sal_ctr{
+            display: flex;
+            justify-content: space-around;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Employee Management System</h1>
+    
+    <h2>Average Salary</h2>
+ <div class="avg_sal_ctr">
+    <form method="get">
+        <input type="submit" name="total_average_salary" value="Get Total Average Salary">
+        <div class="result-box">
+        {% if total_average_salary %}
+            <span>Total Average salary :${{ total_average_salary|floatformat:2 }}</span>
+        {% endif %}
+        </div>
+    </form>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="department">Department:</label>
+        <input type="text" name="department" required>
+        <input type="submit" name="submit_average_salary" value="Calculate Average Salary">
+
+        <div class="result-box">
+        {% if department_average_salary %}
+        <span>Average salary for {{ department_average_salary.department }} department is: ${{ department_average_salary.average_salary|floatformat:2 }}</span>
+        {% endif %}
+        </div>
+    </form>
+ </div>
+
+
+
+ <h2>Filter Employees</h2>
+    <form method="get">
+        <label for="search">Search:</label>
+        <input type="text" name="search">
+
+        <label for="age">Age:</label>
+        <input type="number" name="age">
+
+        <label for="dob">DOB:</label>
+        <input type="date" name="dob">
+
+        <label for="salary">Salary:</label>
+        <input type="number" name="salary">
+
+        <label for="department">Department:</label>
+        <input type="text" name="department">
+
+        <input type="submit" value="Filter">
+    </form>
+    <h2>Employee List</h2> 
+    <!-- <span>Total Records: {{row_count}}</span> -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Age</th>
+                <th>DOB</th>
+                <th>Salary</th>
+                <th>Department</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for employee in employees %}
+                <tr>
+                    <td>{{ employee.FullName }}</td>
+                    <td>{{ employee.Age }}</td>
+                    <td>{{ employee.DOB }}</td>
+                    <td>{{ employee.Salary }}</td>
+                    <td>{{ employee.Department }}</td>
+                    <td><a href="{% url 'update_employee' employee.id %}">Update</a></td>
+                    <td><a href="{% url 'delete_employee' employee.id %}">Delete</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
